@@ -66,46 +66,46 @@ def main() :
 
 
     # 스탁트윗의 API를 호출
-    # res = requests.get('https://api.stocktwits.com/api/2/streams/symbol/{}.json'.format(symbol))
+    res = requests.get('https://api.stocktwits.com/api/2/streams/symbol/{}.json'.format(symbol))
 
-    # # JSON 형식이므로, .json() 이용
-    # res_data = res.json() 
+    # JSON 형식이므로, .json() 이용
+    res_data = res.json() 
 
-    # # 파이썬의 딕셔너리와 리스트의 조합으로 사용가능 
-    # # st.write(res_data) # 전체데이터
+    # 파이썬의 딕셔너리와 리스트의 조합으로 사용가능 
+    st.write(res_data) # 전체데이터
 
-    # # 필요한건 messages, 파싱 원하는데이터 찾아서 표시하는방법
-    # for message in res_data['messages'] :
-    #     col1, col2 = st.beta_columns( [1, 4] ) # 비율을 정할 수 있다. 1:4 비율로 컬럼잡아달라 
+    # 필요한건 messages, 파싱 원하는데이터 찾아서 표시하는방법
+    for message in res_data['messages'] :
+        col1, col2 = st.beta_columns( [1, 4] ) # 비율을 정할 수 있다. 1:4 비율로 컬럼잡아달라 
         
-    #     with col1 :
-    #         st.image( message['user']['avatar_url'] )
+        with col1 :
+            st.image( message['user']['avatar_url'] )
 
-    #     with col2 :
-    #         st.write( '유저 이름 : ' + message['user']['username'] )
-    #         st.write( '트윗 내용 : ' + message['body'] )
-    #         st.write( '올린 시간 : ' + message['created_at'] )
-    #         st.markdown('---')
+        with col2 :
+            st.write( '유저 이름 : ' + message['user']['username'] )
+            st.write( '트윗 내용 : ' + message['body'] )
+            st.write( '올린 시간 : ' + message['created_at'] )
+            st.markdown('---')
 
     p_df = df.reset_index()
     p_df.rename(columns = {'Date' : 'ds', 'Close' : 'y'}, inplace = True)
 
-    # st.dataframe(p_df) # 잘바뀌었는지 확인
+    st.dataframe(p_df) # 잘바뀌었는지 확인
 
     # 에측가능!
-    m = Prophet()
-    m.fit(p_df)
+    # m = Prophet()
+    # m.fit(p_df)
 
-    future = m.make_future_dataframe(periods= 365)
-    forecast = m.predict(future)
+    # future = m.make_future_dataframe(periods= 365)
+    # forecast = m.predict(future)
 
-    # st.dataframe(forecast)
+    # # st.dataframe(forecast)
 
-    fig1 = m.plot(forecast)
-    st.pyplot(fig1)
+    # fig1 = m.plot(forecast)
+    # st.pyplot(fig1)
 
-    fig2 = m.plot_components(forecast)
-    st.pyplot(fig2)
+    # fig2 = m.plot_components(forecast)
+    # st.pyplot(fig2)
 
 
 
